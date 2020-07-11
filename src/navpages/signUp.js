@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import Joi from 'joi';
 import Form from '../components/common/form';
 import Brand from './bluebirdbig.png';
-import http from '../services/httpServices';
+import { signUpUser } from '../components/redux/actions/userActions';
 class Signup extends Form {
   state = {
     data: { email: '', password: '', confirmPassword: '', handle: '' },
     errors: {},
-    loading: false,
   };
 
   schema = {
@@ -26,31 +26,14 @@ class Signup extends Form {
       .options({ language: { any: { allowOnly: 'must match password' } } }),*/,
     handle: Joi.string().required().label('Handle'),
   };
-  doSubmit = async (e) => {
-    console.log(' login request started');
-    try {
-      this.setState({ loading: true });
-      const result = await http.post('/signup', this.state.data);
-      this.setState({ loading: false });
-      //const token = result.data.token;
-      console.log('result', result);
-      localStorage.setItem('AuthToken', result.data.token);
-      this.props.history.replace('/');
-    } catch (ex) {
-      this.setState({ loading: false });
-      console.log('ex', ex.response);
-      if (
-        ex.response &&
-        ex.response.status >= 400 &&
-        ex.response.status < 500
-      ) {
-        const errors = { ...this.state.errors };
-        for (const [key, value] of Object.entries(ex.response.data)) {
-          errors[key] = value;
-        }
-        this.setState({ errors });
-      }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.UI.errors) {
+      this.setState({ errors: nextProps.UI.errors });
     }
+  }
+  doSubmit = async (e) => {
+    console.log(' signup request started');
+    this.props.signUpUser(this.state.data, this.props.history);
   };
 
   render() {
@@ -97,5 +80,12 @@ class Signup extends Form {
     );
   }
 }
-
-export default Signup;
+const mapStatetoProps = (state) => ({
+  UI: state.UI,
+  user: state.user,
+});
+const mapDispatchToProps = (dispatch) => ({
+  signUpUser: (newUserData, history) =>
+    dispatch(signUpUser(newUserData, history)),
+});
+export default connect(mapStatetoProps, mapDispatchToProps)(Signup);

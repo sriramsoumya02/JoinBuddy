@@ -81,14 +81,15 @@ export const editUserData = (userData) => async (dispatch) => {
 
 export const notificationMarkAsRead = (notificationIds) => async (dispatch) => {
   try {
-    const result = await http.post('/notifications', userData);
+    const result = await http.post('/notifications', notificationIds);
     console.log('result', result);
     dispatch({ type: MARK_NOTIFICATION_READ });
   } catch (ex) {
     console.log(ex);
   }
 };
-const setAuthoraizationHeader = (token) => {
+
+export const setAuthoraizationHeader = (token) => {
   localStorage.setItem('AuthToken', token);
   Axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 };

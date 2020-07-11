@@ -5,7 +5,7 @@ class Form extends Component {
   state = {
     data: {},
     errors: {},
-    loading: false,
+    // loading: false,
   };
   validate = () => {
     const options = { abortEarly: false };
@@ -15,7 +15,7 @@ class Form extends Component {
     error.details.map((item) => (errors[item.path[0]] = item.message));
     if (
       this.state.data.confirmPassword &&
-      this.state.data.confirmPassword != this.state.data.password
+      this.state.data.confirmPassword !== this.state.data.password
     )
       errors.confirmPassword = 'passwords didnt match';
     return errors;
@@ -30,7 +30,7 @@ class Form extends Component {
   validateProperty = ({ name, value }) => {
     console.log(' in validateProperty', { [name]: value });
     if (name === 'confirmPassword') {
-      if (value != this.state.data.password) return 'passwords didnt match';
+      if (value !== this.state.data.password) return 'passwords didnt match';
       else return null;
     } else {
       const { error } = Joi.validate(
@@ -72,12 +72,12 @@ class Form extends Component {
   renderSubmit(name) {
     return (
       <button
-        disabled={this.validate() && !this.state.loading}
+        disabled={this.validate() && !this.props.UI.loading}
         className="btn btn-primary btn-block mt-5"
       >
-        {this.state.loading && (
+        {this.props.UI.loading && (
           <span
-            class="spinner-border spinner-border-sm"
+            className="spinner-border spinner-border-sm"
             role="status"
             aria-hidden="true"
           ></span>

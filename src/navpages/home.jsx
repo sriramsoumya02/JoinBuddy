@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { getAllScreams } from '../services/screamsServices';
 
 import Scream from '../components/scream/scream';
+import Profile from '../navpages/profile';
 
 class Home extends Component {
   state = {
@@ -19,7 +20,9 @@ class Home extends Component {
             <Scream key={val.screamId} scream={val} />
           ))}
         </div>
-        <div className="col-sm-4">Profile Section.</div>
+        <div className="col-sm-4">
+          <Profile />
+        </div>
       </div>
     );
   }
