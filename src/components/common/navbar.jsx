@@ -1,5 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faPlus, faBell } from '@fortawesome/free-solid-svg-icons';
 import Brand from './navIcon.png';
 class Navbar extends Component {
   state = {};
@@ -24,29 +27,58 @@ class Navbar extends Component {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/">
-                  Home
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/login">
-                  Login
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/signUp">
-                  SignUp
-                </NavLink>
-              </li>
+          <div
+            className="collapse navbar-collapse w-100 justify-content-center"
+            id="navbarSupportedContent"
+          >
+            <ul className="navbar-nav mx-auto">
+              {this.props.authenticated ? (
+                <Fragment>
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/scream">
+                      <FontAwesomeIcon icon={faPlus} />
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/">
+                      <FontAwesomeIcon icon={faHome} />
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/notifications">
+                      <FontAwesomeIcon icon={faBell} />
+                    </NavLink>
+                  </li>
+                </Fragment>
+              ) : (
+                <Fragment>
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/">
+                      Home
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/login">
+                      Login
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/signUp">
+                      SignUp
+                    </NavLink>
+                  </li>
+                </Fragment>
+              )}
             </ul>
           </div>
+          <div className="w-100"></div>
         </div>
       </nav>
     );
   }
 }
+const mapStateToProps = (state) => ({
+  authenticated: state.user.authenticated,
+});
 
-export default Navbar;
+export default connect(mapStateToProps)(Navbar);

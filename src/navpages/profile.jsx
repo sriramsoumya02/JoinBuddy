@@ -7,9 +7,14 @@ import {
   faLink,
   faCalendar,
   faCamera,
+  faSignOutAlt,
 } from '@fortawesome/free-solid-svg-icons';
-import { uploadImage } from '../components/redux/actions/userActions';
 import { connect } from 'react-redux';
+import {
+  uploadImage,
+  logoutUser,
+} from '../components/redux/actions/userActions';
+import EditProfile from './editProfie';
 class Profile extends Component {
   state = {};
   handleSelectImage = (e) => {
@@ -23,20 +28,6 @@ class Profile extends Component {
     this.props.uploadImage(formdata);
   };
   render() {
-    // const imgWrapper = {
-    //   width: '150px',
-    //   height: '150px',
-    //   position: 'relative',
-    // };
-    // const imgContainer = {
-    //   position: 'absolute',
-    //   top: 0,
-    //   left: 0,
-    //   width: '150px',
-    //   height: '150px',
-    //   zIndex: 2,
-    //   backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    // };
     const {
       authenticated,
       loading,
@@ -98,6 +89,13 @@ class Profile extends Component {
           <FontAwesomeIcon icon={faCalendar} className="text-primary" /> &nbsp;
           Joined {'  ' + dayjs(createdAt).format('MMM YYYY')}
         </div>
+        <div className="d-flex justify-content-between mx-5 mt-3 pb-2 text-primary">
+          <FontAwesomeIcon
+            icon={faSignOutAlt}
+            onClick={this.props.logoutUser}
+          />
+          <EditProfile />
+        </div>
       </div>
     );
   }
@@ -107,5 +105,6 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = (dispatch) => ({
   uploadImage: (formdata) => dispatch(uploadImage(formdata)),
+  logoutUser: () => dispatch(logoutUser()),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

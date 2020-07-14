@@ -2,7 +2,6 @@ import Axios from 'axios';
 import http from '../../../services/httpServices';
 import {
   SET_USER,
-  SET_AUTHENTICATED,
   SET_ERRORS,
   CLEAR_ERRORS,
   LOADING_USER,

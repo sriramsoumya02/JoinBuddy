@@ -15,15 +15,31 @@ const input = ({
       <label htmlFor={name} className="text-primary font-weight-bold">
         {label}
       </label>
-      <input
-        type={type}
-        name={name}
-        id={id}
-        placeholder={placeholder}
-        className={`form-control formcontrol-lg  ${error ? 'is-invalid' : ''}`}
-        onChange={onChange}
-        value={value}
-      />
+      {type === 'textArea' ? (
+        <textarea
+          rows="3"
+          name={name}
+          id={id}
+          placeholder={placeholder}
+          className={`form-control formcontrol-lg  ${
+            error ? 'is-invalid' : ''
+          }`}
+          onChange={onChange}
+          value={value}
+        />
+      ) : (
+        <input
+          type={type}
+          name={name}
+          id={id}
+          placeholder={placeholder}
+          className={`form-control formcontrol-lg  ${
+            error ? 'is-invalid' : ''
+          }`}
+          onChange={onChange}
+          value={value}
+        />
+      )}
 
       <div className="invalid-feedback">{error}</div>
     </div>
